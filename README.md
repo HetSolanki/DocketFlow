@@ -1,8 +1,3 @@
-# React + Vite
+# DocketFlow
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- DocketFlow is your straightforward solution to keeping track of daily tasks. It’s a simple, easy-to-use to-do list that helps you manage your day-to-day activities efficiently. With DocketFlow, you can quickly add tasks, set reminders, and check off completed items, all in one place. Whether you’re planning your day, organizing work tasks, or just making sure you don’t forget the groceries, DocketFlow keeps everything manageable and accessible. Stay organized and get more done with DocketFlow – your reliable to-do list companion.
