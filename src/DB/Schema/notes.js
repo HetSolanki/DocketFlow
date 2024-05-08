@@ -6,6 +6,10 @@ const noteSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  description: {
+    type: String,
+    default: "",
+  },
 });
 
 const Note = mongoose.model("Note", noteSchema);

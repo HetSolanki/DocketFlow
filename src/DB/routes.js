@@ -28,7 +28,6 @@ router.put(
   body("completed").optional(),
   async (req, res) => {
     try {
-      console.log(req.body.title);
       const errors = validationResult(req);
 
       if (!errors.isEmpty()) {
@@ -39,6 +38,7 @@ router.put(
         {
           title: req.body.title,
           completed: req.body.completed,
+          description: req.body.description,
         },
         { new: true }
       );

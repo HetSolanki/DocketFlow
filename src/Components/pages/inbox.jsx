@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchNotes } from "../../utils/fetchNotes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   createNote,
   updateNoteState,
@@ -17,8 +17,11 @@ export default function Inbox() {
     queryFn: fetchNotes,
   });
 
-  const [noteTitle, setNoteTitle] = useState(result?.data?.data);
-  const [noteDescription, setNoteDescription] = useState("");
+  const [note, setNote] = useState("");
+
+  useEffect(() => {
+    setNote(result?.data?.data?.[0]);
+  }, [result?.data?.data]);
 
   async function handleCreate(e) {
     if (e.key === "Enter") {
@@ -43,6 +46,7 @@ export default function Inbox() {
       setNewNote(await note.json());
     }
   }
+
   return (
     <>
       <div className="container flex gap-x-1rem">
@@ -63,6 +67,7 @@ export default function Inbox() {
                     <li
                       key={index}
                       className="hover:bg-gray-400/50 p-2 flex items-center gap-x-1"
+                      onClick={() => setNote(note)}
                     >
                       <input
                         type="checkbox"
@@ -138,8 +143,8 @@ export default function Inbox() {
             </div>
           </div>
         </div>
-        <div className="description">
-          <Description title={noteTitle} description={noteDescription} />
+        <div className="description w-[30%]">
+          <Description note={note} />
         </div>
       </div>
     </>
