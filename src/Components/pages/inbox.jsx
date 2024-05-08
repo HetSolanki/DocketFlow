@@ -1,12 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import { fetchNotes } from "../../utils/fetchNotes";
 import { useState } from "react";
-import { createNote, updateNoteState } from "../../utils/CRUD/createNote";
+import {
+  createNote,
+  updateNoteState,
+  updateNote,
+} from "../../utils/CRUD/Note_Req";
 
 export default function Inbox() {
   const [newNote, setNewNote] = useState("");
   const [oldNote, setOldNote] = useState("");
-  const [newNoteValue, setNewNoteValue] = useState("");
+
   const result = useQuery({
     queryKey: ["notes", newNote, oldNote],
     queryFn: fetchNotes,
@@ -29,6 +33,12 @@ export default function Inbox() {
     setOldNote(await note.json());
   }
 
+  async function handleUpdate(e, id, title, completed) {
+    if (e.key === "Enter") {
+      const note = await updateNote(id, title, completed);
+      setNewNote(await note.json());
+    }
+  }
   return (
     <>
       <div className="text-2xl font-semibold">Inbox</div>
@@ -42,7 +52,7 @@ export default function Inbox() {
       <div className="notes mt-1">
         <div className="Not-Completed">
           <ul>
-            {result?.data?.map((note, index) =>
+            {result?.data?.data?.map((note, index) =>
               !note.completed ? (
                 <li
                   key={index}
@@ -52,15 +62,17 @@ export default function Inbox() {
                     type="checkbox"
                     name={note.title}
                     id={note._id}
+                    defaultChecked={false}
                     onClick={() => updateState(note._id)}
                   />
                   <input
                     type="text"
-                    className="text-lg bg-transparent focus:border-0"
-                    value={newNoteValue}
-                    onFocus={(e) => e.preventDefault()}
-                    onChange={(e) => setNewNoteValue(e.target.value)}
-                    // onClick={(e) => e.preventDefault()}
+                    className="text-lg bg-transparent border-transparent outline-none"
+                    onChange={(e) => e.target.value}
+                    defaultValue={note.title}
+                    onKeyDown={(e) =>
+                      handleUpdate(e, note._id, e.target.value, note.completed)
+                    }
                   />
                 </li>
               ) : (
@@ -72,7 +84,7 @@ export default function Inbox() {
         <div className="Completed mt-[2rem]">
           <h1 className="font-bold text-xl">Completed</h1>
           <ul>
-            {result?.data?.map((note, index) =>
+            {result?.data?.data?.map((note, index) =>
               note.completed ? (
                 <li
                   key={index}
@@ -86,7 +98,15 @@ export default function Inbox() {
                     onClick={() => updateState(note._id)}
                     className="accent-slate-500"
                   />
-                  <span className="text-lg">{note.title}</span>
+                  <input
+                    type="text"
+                    className="text-lg bg-transparent border-transparent outline-none"
+                    onChange={(e) => e.target.value}
+                    defaultValue={note.title}
+                    onKeyDown={(e) =>
+                      handleUpdate(e, note._id, e.target.value, note.completed)
+                    }
+                  />
                 </li>
               ) : (
                 ""

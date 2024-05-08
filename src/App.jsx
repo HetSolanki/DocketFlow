@@ -1,4 +1,4 @@
-import Inbox from "./Components/pages/inbox";
+import Inbox from "./Components/pages/Inbox";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function App() {

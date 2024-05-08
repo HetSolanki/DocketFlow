@@ -1,12 +1,13 @@
 import { Router } from "express";
 import { Note } from "./Schema/notes.js";
+import { body, validationResult } from "express-validator";
 
 const router = Router();
 
 router.get("/notes", async (req, res) => {
   try {
     const notes = await Note.find({});
-    res.json(notes);
+    res.json({ data: notes });
   } catch (e) {
     res.json({ message: e });
   }
@@ -15,24 +16,39 @@ router.get("/notes", async (req, res) => {
 router.get("/notes/:id", async (req, res) => {
   try {
     const note = await Note.findById(req.params.id);
-    res.json(note);
+    res.json({ data: note });
   } catch (error) {
     res.json({ message: "Enter Valid Id" });
   }
 });
 
-router.put("/notes/:id", async (req, res) => {
-  try {
-    const noteTemp = await Note.findById(req.params.id);
-    const note = await Note.findByIdAndUpdate(req.params.id, {
-      completed: !noteTemp.completed,
-    });
+router.put(
+  "/notes/:id",
+  body("title").optional(),
+  body("completed").optional(),
+  async (req, res) => {
+    try {
+      console.log(req.body.title);
+      const errors = validationResult(req);
 
-    res.json(note);
-  } catch (error) {
-    res.json({ message: "Enter Valid Id" });
+      if (!errors.isEmpty()) {
+        res.json({ data: errors.array() });
+      }
+      const updatedNote = await Note.findByIdAndUpdate(
+        req.params.id,
+        {
+          title: req.body.title,
+          completed: req.body.completed,
+        },
+        { new: true }
+      );
+
+      res.json({ data: updatedNote });
+    } catch (error) {
+      res.json({ message: "Enter Valid Id" });
+    }
   }
-});
+);
 
 router.post("/notes", async (req, res) => {
   try {

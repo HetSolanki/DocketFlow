@@ -22,3 +22,18 @@ export const updateNoteState = async (id) => {
 
   return note;
 };
+
+export const  updateNote = async (id, title, completed) => {
+  const note = await fetch(`http://localhost:3001/api/notes/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      title,
+      completed,
+    }),
+  });
+
+  return note;
+};
