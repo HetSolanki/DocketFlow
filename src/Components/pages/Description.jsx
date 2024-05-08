@@ -1,3 +1,11 @@
-export default function Description() {
-  return <div>Description</div>;
+export default function Description({ title, description }) {
+  return (
+    <>
+      <div>
+        {console.log({ title })}
+        <p>{title ? title : "Not Available"}</p>
+        <p>{description}</p>
+      </div>
+    </>
+  );
 }
